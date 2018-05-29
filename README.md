@@ -1,7 +1,7 @@
 # Vibro
 ..
 
-###disc_summary.py 
+### disc_summary.py 
 ---------------
 Calculate analytical mode shapes for a clamped-free annular plate
 
