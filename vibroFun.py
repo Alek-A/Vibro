@@ -31,7 +31,6 @@ def filterTransient(y,index=None,time=None):
         # Slice by time
             return y[:,t>=time]
 
-
 def integrate(odeFunc,y0,par,t1,
               dt=0.01, t0=0, jac=None):
     """
@@ -62,6 +61,7 @@ def integrate(odeFunc,y0,par,t1,
 #        print('Ω: {0:.2f} -> {1:.2f} %'.format(Omega,r.t/t1*100))
         r.integrate(r.t+dt)
         ans = np.append(ans, np.concatenate((np.array([r.t]), r.y))[:,None],axis=1)
+        
     print('')
     return ans
 
@@ -141,44 +141,3 @@ def lyapGlobal(localLyap, return_all=True):
     else:
         globalLyap = np.mean(localLyap)
     return globalLyap
-        
-#%% Old stuff
-#def integrate(myODE,jac,y0,par,t1,
-#              dt=0.01, t0=0):
-#    """
-#    myODE   function for ODE, func(t,y, args=())
-#    jac     function that returns jacobian matrix
-#    y0      array, initial conditions
-#    par     parameters to pass to myODE
-#    t1      end time
-#    dt      time step
-#    t0      start time
-#    
-#    returns
-#    ans     array (n+1, time) of results
-#    
-#    Notes on further use:
-#        scipy.integrate.ode can only have one class instance at a given time,
-#        as they are not reentrant. This function only returns the results
-#    """
-#    r = ode(myODE, jac).set_integrator('dopri5',nsteps=500,rtol=1e-8)
-#    r.set_initial_value(y0, t0)
-#    r.set_f_params(par)
-#    r.set_jac_params(par)
-#    ans = np.concatenate((np.array([t0]),y0))[:,None]
-#    while (r.t < t1) and r.successful():
-#        update_progress(r.t/t1)
-##        print('Ω: {0:.2f} -> {1:.2f} %'.format(Omega,r.t/t1*100))
-#        r.integrate(r.t+dt)
-#        ans = np.append(ans, np.concatenate((np.array([r.t]), r.y))[:,None],axis=1)
-#    return ans
-#
-#def integrateUser(myODE,jac,y0,par,Omega,
-#                  nIntMultiple=50,nCycles=40, t0=0):
-#    """
-#    A wrapper for using integrate.
-#    Calculates necessary dt, t1
-#    """
-#    dt = 2*np.pi/Omega/nIntMultiple
-#    t1 = nCycles*2*np.pi/Omega + t0
-#    return integrate(myODE,jac,y0,par,t1,dt=dt,t0=t0)
